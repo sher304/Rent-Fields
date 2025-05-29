@@ -1,6 +1,7 @@
 package org.example.rentfield.Model;
 
 import jakarta.persistence.*;
+import org.example.rentfield.Model.Enums.PaymentStatus;
 
 import java.util.Date;
 
@@ -11,7 +12,8 @@ public class Payment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int payment_id;
     private int amount;
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private PaymentStatus status;
     private Date date;
 
     @OneToOne

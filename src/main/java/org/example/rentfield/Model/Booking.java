@@ -2,6 +2,7 @@ package org.example.rentfield.Model;
 
 
 import jakarta.persistence.*;
+import org.example.rentfield.Model.Enums.BookingStatus;
 
 import java.util.Date;
 
@@ -13,7 +14,8 @@ public class Booking {
     private int booking_id;
     private Date start_date;
     private Date end_date;
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private BookingStatus status;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

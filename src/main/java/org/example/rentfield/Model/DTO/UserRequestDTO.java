@@ -1,10 +1,18 @@
 package org.example.rentfield.Model.DTO;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
+
 public class UserRequestDTO {
 
     private String name;
-    private String password;
+    @Email(message = "Email is not valid", regexp = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$")
+    @NotEmpty(message = "Email cannot be empty")
     private String email;
+    @Size(min = 6, max = 12)
+    private String password;
+    private String phone_number;
 
     public String getName() {
         return name;
@@ -32,6 +40,6 @@ public class UserRequestDTO {
 
     @Override
     public String toString() {
-        return name + " " + password + " " + email;
+        return name + " " + password + " " + email + " " + phone_number;
     }
 }

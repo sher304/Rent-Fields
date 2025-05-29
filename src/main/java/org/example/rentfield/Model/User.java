@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
-import org.example.rentfield.Constraint.PhoneNumberProtocol;
 import org.example.rentfield.Model.Enums.Role;
 
 import java.util.List;
@@ -22,7 +21,6 @@ public class User {
     private String email;
     @Size(min = 6, max = 12)
     private String password;
-    @PhoneNumberProtocol
     private String phone_number;
     @Enumerated(EnumType.STRING)
     private Role role;
