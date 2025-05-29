@@ -12,7 +12,16 @@ public class UserRequestDTO {
     private String email;
     @Size(min = 6, max = 12)
     private String password;
-    private String phone_number;
+    @NotEmpty
+    private String phoneNumber;
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
 
     public String getName() {
         return name;
@@ -40,6 +49,6 @@ public class UserRequestDTO {
 
     @Override
     public String toString() {
-        return name + " " + password + " " + email + " " + phone_number;
+        return name + " " + password + " " + email + " " + phoneNumber;
     }
 }
