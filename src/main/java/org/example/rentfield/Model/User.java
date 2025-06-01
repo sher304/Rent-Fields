@@ -86,4 +86,8 @@ public class User {
     public String getPassword() {
         return password;
     }
+
+    public int getUser_id() {
+        return user_id;
+    }
 }
