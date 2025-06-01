@@ -36,6 +36,9 @@ public class ReservationService {
 
     public ReservationDTO saveReservation(ReservationDTO reservationDTO) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
+        User user = registrationRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
         boolean isAuthorized = authentication.getAuthorities().stream()
                 .anyMatch(auth -> auth.getAuthority().equalsIgnoreCase(Role.User.name())
                         || auth.getAuthority().equalsIgnoreCase(Role.User.name())
@@ -44,16 +47,12 @@ public class ReservationService {
             throw new RuntimeException("Not Authorized");
         }
 
-        Optional<User> user = registrationRepository.findById(reservationDTO.getUserId());
-        if (!user.isPresent()) {
-            throw new RuntimeException("User not found");
-        }
 
         Optional<FootballField> field = fieldRepository.findById(reservationDTO.getFieldId());
         if (!field.isPresent()) {
             throw new RuntimeException("Field not found");
         }
-        Reservation reservation = reservationMapper.map(reservationDTO, field.get(), user .get());
+        Reservation reservation = reservationMapper.map(reservationDTO, field.get(), user);
         reservation.setReservation_start(LocalDateTime.now());
         reservation.setStatus(BookingStatus.Pending);
         reservationRepository.save(reservation);

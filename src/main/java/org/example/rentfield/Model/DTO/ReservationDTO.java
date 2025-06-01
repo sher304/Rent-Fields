@@ -3,18 +3,9 @@ package org.example.rentfield.Model.DTO;
 import java.time.LocalDateTime;
 
 public class ReservationDTO {
-    private int userId;
     private int fieldId;
     private LocalDateTime timeStart;
     private LocalDateTime timeEnd;
-
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
 
     public int getFieldId() {
         return fieldId;
