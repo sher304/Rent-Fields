@@ -33,19 +33,19 @@ public class FieldService {
 
     public void addField(FieldDTO fieldDTO) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        System.out.println(authentication.toString());
-        System.out.println("AUTH NAME " + authentication.getName());
-
-        String email = authentication.getName();
-        Optional<User> user = registrationRepository.findByEmail(email);
-        if (!user.isPresent()) {
-            throw new RuntimeException("Not found admin id");
-        }
-
-        if (!user.get().getRole().equals(Role.Admin)) {
+        boolean isAdmin = authentication.getAuthorities().stream()
+                .anyMatch(auth -> auth.getAuthority().equalsIgnoreCase(Role.Admin.name()));
+        if (!isAdmin) {
             throw new RuntimeException("Not admin");
         }
-        FootballField footballField = fieldMapper.map(fieldDTO, user.get());
+
+        Optional<User> manager = registrationRepository.findById(fieldDTO.getManager_id());
+        System.out.println("MANAGER ID: " + fieldDTO.getManager_id());
+        if (!manager.isPresent()) {
+            throw new RuntimeException("User not found");
+        }
+
+        FootballField footballField = fieldMapper.map(fieldDTO, manager.get());
         fieldRepository.save(footballField);
     }
 

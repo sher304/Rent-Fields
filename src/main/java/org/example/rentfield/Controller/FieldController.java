@@ -32,7 +32,7 @@ public class FieldController {
             fieldService.addField(fieldDTO);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
-            return  ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            return  ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
