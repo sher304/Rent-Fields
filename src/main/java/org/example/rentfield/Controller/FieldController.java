@@ -2,9 +2,7 @@ package org.example.rentfield.Controller;
 
 import jakarta.validation.Valid;
 import org.example.rentfield.Model.DTO.FieldDTO;
-import org.example.rentfield.Repository.FieldRepository;
-import org.example.rentfield.Service.FieldService;
-import org.springframework.http.HttpStatus;
+import org.example.rentfield.Service.Field.FieldService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;

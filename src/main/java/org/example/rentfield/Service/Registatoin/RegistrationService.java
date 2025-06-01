@@ -1,16 +1,12 @@
-package org.example.rentfield.Service;
+package org.example.rentfield.Service.Registatoin;
 
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
-import org.example.rentfield.Model.DTO.UserMapper;
 import org.example.rentfield.Model.DTO.UserRequestDTO;
 import org.example.rentfield.Model.Enums.Role;
 import org.example.rentfield.Model.User;
-import org.example.rentfield.Repository.RegistrationRepository;
+import org.example.rentfield.Repository.User.RegistrationRepository;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import jakarta.validation.Validator;
@@ -69,5 +65,13 @@ public class RegistrationService {
         user.setPassword(passwordEncoder.encode("admin"));
         user.setRole(Role.Admin);
         registrationRepository.save(user);
+
+        User userSimple = new User();
+        userSimple.setEmail("u@gmail.com");
+        userSimple.setName("admin");
+        userSimple.setPhoneNumber("0000001");
+        userSimple.setPassword(passwordEncoder.encode("admin"));
+        userSimple.setRole(Role.User);
+        registrationRepository.save(userSimple);
     }
 }

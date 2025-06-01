@@ -1,12 +1,11 @@
-package org.example.rentfield.Service;
+package org.example.rentfield.Service.Field;
 
 import org.example.rentfield.Model.DTO.FieldDTO;
-import org.example.rentfield.Model.DTO.FieldMapper;
 import org.example.rentfield.Model.Enums.Role;
 import org.example.rentfield.Model.FootballField;
 import org.example.rentfield.Model.User;
-import org.example.rentfield.Repository.FieldRepository;
-import org.example.rentfield.Repository.RegistrationRepository;
+import org.example.rentfield.Repository.Field.FieldRepository;
+import org.example.rentfield.Repository.User.RegistrationRepository;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -77,5 +76,15 @@ public class FieldService {
             throw new RuntimeException("Not found id");
         }
         fieldRepository.deleteById(id);
+    }
+
+    public void saveField() {
+        FootballField footballField = new FootballField();
+        footballField.setManager(registrationRepository.findById(2).get());
+        footballField.setTitle("A");
+        footballField.setDescription("B");
+        footballField.setLocation("C");
+        footballField.setPrice_per_hour(140);
+        fieldRepository.save(footballField);
     }
 }

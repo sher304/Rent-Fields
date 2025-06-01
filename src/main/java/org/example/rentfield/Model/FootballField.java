@@ -86,6 +86,14 @@ public class FootballField {
         this.reviews = reviews;
     }
 
+    public int getField_id() {
+        return field_id;
+    }
+
+    public void setField_id(int field_id) {
+        this.field_id = field_id;
+    }
+
     @ManyToOne
     @JoinColumn(name = "manager_id")
     private User manager;

@@ -1,4 +1,4 @@
-package org.example.rentfield.Repository;
+package org.example.rentfield.Repository.User;
 
 import org.example.rentfield.Model.User;
 import org.springframework.stereotype.Repository;

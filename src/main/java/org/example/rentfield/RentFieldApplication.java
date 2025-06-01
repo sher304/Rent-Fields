@@ -1,16 +1,13 @@
 package org.example.rentfield;
 
-import org.example.rentfield.Model.DTO.UserRequestDTO;
-import org.example.rentfield.Service.FieldService;
-import org.example.rentfield.Service.RegistrationService;
+import org.example.rentfield.Service.Field.FieldService;
+import org.example.rentfield.Service.Registatoin.RegistrationService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -21,6 +18,9 @@ public class RentFieldApplication {
         ConfigurableApplicationContext context = SpringApplication.run(RentFieldApplication.class, args);
         RegistrationService registrationService = context.getBean(RegistrationService.class);
         registrationService.saveAdminUser();
+
+        FieldService fieldService = context.getBean(FieldService.class);
+        fieldService.saveField();
     }
 
     @Bean

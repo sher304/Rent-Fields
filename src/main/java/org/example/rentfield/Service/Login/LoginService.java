@@ -1,9 +1,8 @@
-package org.example.rentfield.Service;
+package org.example.rentfield.Service.Login;
 
-import org.example.rentfield.Model.DTO.UserLoginDTO;
-import org.example.rentfield.Model.DTO.UserMapper;
+import org.example.rentfield.Service.Registatoin.UserMapper;
 import org.example.rentfield.Model.User;
-import org.example.rentfield.Repository.RegistrationRepository;
+import org.example.rentfield.Repository.User.RegistrationRepository;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -11,7 +10,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.List;
-import java.util.Optional;
 
 
 @Service

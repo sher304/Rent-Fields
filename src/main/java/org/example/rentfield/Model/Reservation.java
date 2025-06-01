@@ -3,6 +3,7 @@ package org.example.rentfield.Model;
 import jakarta.persistence.*;
 import org.example.rentfield.Model.Enums.BookingStatus;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -11,9 +12,9 @@ public class Reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int reservation_id;
-    private Date reservation_start;
-    private Date time_start;
-    private Date time_end;
+    private LocalDateTime reservation_start;
+    private LocalDateTime time_start;
+    private LocalDateTime time_end;
     @Enumerated(EnumType.STRING)
     private BookingStatus status;
 
@@ -27,4 +28,68 @@ public class Reservation {
 
     @OneToOne(mappedBy = "reservation", cascade = CascadeType.ALL)
     private Payment payment;
+
+    public int getReservation_id() {
+        return reservation_id;
+    }
+
+    public void setReservation_id(int reservation_id) {
+        this.reservation_id = reservation_id;
+    }
+
+    public LocalDateTime getReservation_start() {
+        return reservation_start;
+    }
+
+    public void setReservation_start(LocalDateTime reservation_start) {
+        this.reservation_start = reservation_start;
+    }
+
+    public LocalDateTime getTime_start() {
+        return time_start;
+    }
+
+    public void setTime_start(LocalDateTime time_start) {
+        this.time_start = time_start;
+    }
+
+    public LocalDateTime getTime_end() {
+        return time_end;
+    }
+
+    public void setTime_end(LocalDateTime time_end) {
+        this.time_end = time_end;
+    }
+
+    public BookingStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(BookingStatus status) {
+        this.status = status;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public FootballField getField() {
+        return field;
+    }
+
+    public void setField(FootballField field) {
+        this.field = field;
+    }
+
+    public Payment getPayment() {
+        return payment;
+    }
+
+    public void setPayment(Payment payment) {
+        this.payment = payment;
+    }
 }

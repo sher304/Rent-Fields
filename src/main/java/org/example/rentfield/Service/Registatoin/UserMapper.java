@@ -1,5 +1,7 @@
-package org.example.rentfield.Model.DTO;
+package org.example.rentfield.Service.Registatoin;
 
+import org.example.rentfield.Model.DTO.UserLoginDTO;
+import org.example.rentfield.Model.DTO.UserRequestDTO;
 import org.example.rentfield.Model.Enums.Role;
 import org.example.rentfield.Model.User;
 import org.springframework.stereotype.Service;

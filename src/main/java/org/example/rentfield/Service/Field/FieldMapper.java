@@ -1,5 +1,6 @@
-package org.example.rentfield.Model.DTO;
+package org.example.rentfield.Service.Field;
 
+import org.example.rentfield.Model.DTO.FieldDTO;
 import org.example.rentfield.Model.FootballField;
 import org.example.rentfield.Model.User;
 import org.springframework.stereotype.Service;

@@ -1,4 +1,4 @@
-package org.example.rentfield.Repository;
+package org.example.rentfield.Repository.Field;
 
 import org.example.rentfield.Model.FootballField;
 import org.springframework.stereotype.Repository;
