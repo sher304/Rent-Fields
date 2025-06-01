@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController()
 public class RegistrationController {
 
@@ -25,6 +27,8 @@ public class RegistrationController {
     @PostMapping("/api/v1/registration")
     public ResponseEntity<Object> userRegistration(@Valid @RequestBody UserRequestDTO userDTO,
                                                    BindingResult result) {
+        System.out.println("REQUEST RECEIVED!");
+
         if (result.hasErrors()) {
             System.out.println("Validation Error " +  result.getAllErrors());
             return ResponseEntity.badRequest().body(result.getAllErrors());
@@ -34,7 +38,12 @@ public class RegistrationController {
             registrationService.registerUser(userDTO);
             return ResponseEntity.ok("User registered");
         } catch (ConstraintViolationException e) {
-            return ResponseEntity.badRequest().body(e.getConstraintViolations());
+            List<String> errors = e.getConstraintViolations()
+                    .stream()
+                    .map(violation -> violation.getPropertyPath() + ": " + violation.getMessage())
+                    .toList();
+
+            return ResponseEntity.badRequest().body(errors);
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }

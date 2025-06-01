@@ -7,6 +7,10 @@ import org.example.rentfield.Model.DTO.UserRequestDTO;
 import org.example.rentfield.Model.User;
 import org.example.rentfield.Repository.RegistrationRepository;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import jakarta.validation.Validator;
 
@@ -18,12 +22,15 @@ public class RegistrationService {
     private final UserMapper userMapper;
     private RegistrationRepository registrationRepository;
     private final Validator validator;
+    private PasswordEncoder passwordEncoder;
 
     public RegistrationService(RegistrationRepository registrationRepository,
-                               Validator validator, UserMapper userMapper) {
+                               Validator validator, UserMapper userMapper,
+                               PasswordEncoder passwordEncoder) {
         this.registrationRepository = registrationRepository;
         this.validator = validator;
         this.userMapper = userMapper;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public void registerUser(UserRequestDTO userRequestDTO) throws ConstraintViolationException, DataIntegrityViolationException {
@@ -46,6 +53,7 @@ public class RegistrationService {
         }
 
         try {
+            user.setPassword(passwordEncoder.encode(userRequestDTO.getPassword()));
             registrationRepository.save(user);
         } catch (DataIntegrityViolationException ex) {
             throw new RuntimeException("Database error: " + ex.getMessage());
