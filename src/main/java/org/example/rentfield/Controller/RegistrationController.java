@@ -27,7 +27,6 @@ public class RegistrationController {
     @PostMapping("/api/v1/registration")
     public ResponseEntity<Object> userRegistration(@Valid @RequestBody UserRequestDTO userDTO,
                                                    BindingResult result) {
-        System.out.println("REQUEST RECEIVED!");
 
         if (result.hasErrors()) {
             System.out.println("Validation Error " +  result.getAllErrors());

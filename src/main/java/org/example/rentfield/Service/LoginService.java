@@ -4,13 +4,18 @@ import org.example.rentfield.Model.DTO.UserLoginDTO;
 import org.example.rentfield.Model.DTO.UserMapper;
 import org.example.rentfield.Model.User;
 import org.example.rentfield.Repository.RegistrationRepository;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
+import java.util.List;
 import java.util.Optional;
 
+
 @Service
-public class LoginService {
+public class LoginService implements UserDetailsService {
 
     private final RegistrationRepository registrationRepository;
     private final PasswordEncoder passwordEncoder;
@@ -24,19 +29,15 @@ public class LoginService {
         this.userMapper = userMapper;
     }
 
-    public Optional<User> findByEmail(String email) {
-        return registrationRepository.findByEmail(email);
-    }
-
-    public UserLoginDTO validateCredentials(String email, String passwordRaw) {
-        Optional<User>userResult = registrationRepository.findByEmail(email);
-        System.out.println("passwordRaw PASSWORD: " + userResult.get().getPassword());
-        System.out.println("user PASSWORD: " + userResult.get().getPassword());
-        if (!userResult.map(user -> passwordEncoder.matches(passwordRaw, user.getPassword())).orElse(false)) {
-            throw new RuntimeException("Incorrect password!");
-        }
-        System.out.println("RESULT PASSWORD: " + userResult.get().getPassword());
-        UserLoginDTO userLoginDTO = userMapper.map(userResult.get());
-        return userLoginDTO;
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        System.out.println("THE EMAIL: " + email);
+        User user = registrationRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        return new org.springframework.security.core.userdetails.User(
+                user.getEmail(),
+                user.getPassword(),
+                List.of(new SimpleGrantedAuthority(user.getRole().name()))
+        );
     }
 }

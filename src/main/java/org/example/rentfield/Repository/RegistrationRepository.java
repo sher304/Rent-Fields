@@ -7,8 +7,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.Optional;
 
-public interface RegistrationRepository extends CrudRepository<User, String> {
+public interface RegistrationRepository extends CrudRepository<User, Integer> {
     boolean existsByEmail(String email);
     boolean existsByPhoneNumber(String phoneNumber);
     Optional<User> findByEmail(String email);
+    @Override
+    Optional<User> findById(Integer integer);
 }

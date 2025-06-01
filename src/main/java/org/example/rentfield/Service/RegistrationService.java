@@ -4,6 +4,7 @@ import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import org.example.rentfield.Model.DTO.UserMapper;
 import org.example.rentfield.Model.DTO.UserRequestDTO;
+import org.example.rentfield.Model.Enums.Role;
 import org.example.rentfield.Model.User;
 import org.example.rentfield.Repository.RegistrationRepository;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -58,5 +59,15 @@ public class RegistrationService {
         } catch (DataIntegrityViolationException ex) {
             throw new RuntimeException("Database error: " + ex.getMessage());
         }
+    }
+
+    public void saveAdminUser() {
+        User user = new User();
+        user.setEmail("admin@gmail.com");
+        user.setName("admin");
+        user.setPhoneNumber("0000000");
+        user.setPassword(passwordEncoder.encode("admin"));
+        user.setRole(Role.Admin);
+        registrationRepository.save(user);
     }
 }
