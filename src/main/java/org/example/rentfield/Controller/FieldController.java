@@ -24,7 +24,6 @@ public class FieldController {
     public ResponseEntity<?> addField(@Valid @RequestBody FieldDTO fieldDTO,
                                       BindingResult result) {
         if (result.hasErrors()) {
-            System.out.println("Validation Error " +  result.getAllErrors());
             return ResponseEntity.badRequest().body(result.getAllErrors());
         }
 
@@ -36,7 +35,7 @@ public class FieldController {
         }
     }
 
-    @GetMapping("/api/v1/{id}")
+    @GetMapping("/api/v1/field/{id}")
     public ResponseEntity<FieldDTO> getField(@PathVariable int id){
         try {
             FieldDTO fieldDTO = fieldService.getField(id);
@@ -49,5 +48,16 @@ public class FieldController {
     @GetMapping("/api/v1/fields")
     public ResponseEntity<List<FieldDTO>> getAllField(){
         return ResponseEntity.ok().body(fieldService.getAllFields());
+    }
+
+    @DeleteMapping("/api/v1/field/{id}")
+    public ResponseEntity<FieldDTO> removeField(@PathVariable int id){
+        try {
+            fieldService.removeField(id);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            System.out.println("DELETE EREROR: + " + e.getMessage());
+            return ResponseEntity.notFound().build();
+        }
     }
 }

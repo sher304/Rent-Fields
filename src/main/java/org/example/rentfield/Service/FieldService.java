@@ -40,11 +40,11 @@ public class FieldService {
         }
 
         Optional<User> manager = registrationRepository.findById(fieldDTO.getManager_id());
-        System.out.println("MANAGER ID: " + fieldDTO.getManager_id());
         if (!manager.isPresent()) {
             throw new RuntimeException("User not found");
         }
-
+        manager.get().setRole(Role.Manager);
+        registrationRepository.save(manager.get());
         FootballField footballField = fieldMapper.map(fieldDTO, manager.get());
         fieldRepository.save(footballField);
     }
@@ -62,5 +62,20 @@ public class FieldService {
         List<FieldDTO> fieldDTOList = new ArrayList<>();
         fieldRepository.findAll().forEach(field -> fieldDTOList.add(fieldMapper.map(field)));
         return fieldDTOList;
+    }
+
+    public void removeField(int id) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        boolean isAdmin = authentication.getAuthorities().stream()
+                .anyMatch(auth -> auth.getAuthority().equalsIgnoreCase(Role.Admin.name()));
+        if (!isAdmin) {
+            throw new RuntimeException("Not admin");
+        }
+
+        Optional<FootballField> field = fieldRepository.findById(id);
+        if (!field.isPresent()) {
+            throw new RuntimeException("Not found id");
+        }
+        fieldRepository.deleteById(id);
     }
 }

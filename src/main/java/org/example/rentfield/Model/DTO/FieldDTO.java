@@ -1,6 +1,7 @@
 package org.example.rentfield.Model.DTO;
 
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -8,7 +9,10 @@ import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class FieldDTO {
+    private int fieldId;
+    private String fieldName;
     @NotNull
     private int manager_id;
     @NotEmpty
@@ -58,5 +62,21 @@ public class FieldDTO {
 
     public void setPrice_per_hour(int price_per_hour) {
         this.price_per_hour = price_per_hour;
+    }
+
+    public int getFieldId() {
+        return fieldId;
+    }
+
+    public void setFieldId(int fieldId) {
+        this.fieldId = fieldId;
+    }
+
+    public String getFieldName() {
+        return fieldName;
+    }
+
+    public void setFieldName(String fieldName) {
+        this.fieldName = fieldName;
     }
 }

@@ -11,8 +11,9 @@ public class FieldMapper {
         FieldDTO fieldDTO = new FieldDTO();
         fieldDTO.setDescription(footballField.getDescription());
         fieldDTO.setLocation(footballField.getLocation());
-        footballField.setTitle(footballField.getTitle());
-        footballField.setManager(footballField.getManager());
+        fieldDTO.setTitle(footballField.getTitle());
+        fieldDTO.setFieldId(fieldDTO.getFieldId());
+        fieldDTO.setManager_id(footballField.getManager().getUser_id());
         return fieldDTO;
     }
 
