@@ -31,8 +31,8 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @OneToMany(mappedBy = "user")
     @JsonIgnore
+    @OneToMany(mappedBy = "user")
     private List<Booking> bookings;
 
     @OneToMany(mappedBy = "user")
@@ -43,8 +43,8 @@ public class User {
     @JsonIgnore
     private List<Review> reviews;
 
-    @OneToMany(mappedBy = "manager")
     @JsonIgnore
+    @OneToMany(mappedBy = "manager", cascade = CascadeType.REMOVE)
     private List<FootballField> managedFields;
 
     public String getName() {
