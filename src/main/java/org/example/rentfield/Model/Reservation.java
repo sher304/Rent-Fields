@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import org.example.rentfield.Model.Enums.BookingStatus;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Entity
 public class Reservation {
@@ -12,7 +11,8 @@ public class Reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int reservation_id;
-    private LocalDateTime reservation_start;
+    @Column(name = "reservation_start")
+    private LocalDateTime reservationStart;
     private LocalDateTime time_start;
     private LocalDateTime time_end;
     @Enumerated(EnumType.STRING)
@@ -37,12 +37,12 @@ public class Reservation {
         this.reservation_id = reservation_id;
     }
 
-    public LocalDateTime getReservation_start() {
-        return reservation_start;
+    public LocalDateTime getReservationStart() {
+        return reservationStart;
     }
 
-    public void setReservation_start(LocalDateTime reservation_start) {
-        this.reservation_start = reservation_start;
+    public void setReservationStart(LocalDateTime reservation_start) {
+        this.reservationStart = reservation_start;
     }
 
     public LocalDateTime getTime_start() {

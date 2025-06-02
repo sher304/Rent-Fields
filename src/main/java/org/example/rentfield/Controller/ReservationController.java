@@ -1,8 +1,11 @@
 package org.example.rentfield.Controller;
 
 import jakarta.validation.Valid;
+import org.example.rentfield.CustomException.ReservationAlreadyUses;
+import org.example.rentfield.CustomException.UserNotFoundException;
 import org.example.rentfield.Model.DTO.ReservationDTO;
 import org.example.rentfield.Service.Reservation.ReservationService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
@@ -28,8 +31,12 @@ public class ReservationController {
         try {
             ReservationDTO reservationResult  = reservationService.saveReservation(reservationDTO);
             return ResponseEntity.ok(reservationResult);
+        } catch (UserNotFoundException ex) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+        } catch (ReservationAlreadyUses e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
         } catch (Exception ex) {
-            return ResponseEntity.badRequest().body(ex.getMessage());
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ex.getMessage());
         }
     }
 }

@@ -12,7 +12,7 @@ public class FootballField {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int field_id;
+    private int fieldId;
     @NotEmpty
     private String title;
     @NotEmpty
@@ -86,12 +86,12 @@ public class FootballField {
         this.reviews = reviews;
     }
 
-    public int getField_id() {
-        return field_id;
+    public int getFieldId() {
+        return fieldId;
     }
 
-    public void setField_id(int field_id) {
-        this.field_id = field_id;
+    public void setFieldId(int field_id) {
+        this.fieldId = field_id;
     }
 
     @ManyToOne

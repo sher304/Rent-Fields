@@ -34,7 +34,7 @@ public class LoginController {
 
     @PostMapping("api/v1/login")
     public ResponseEntity<Object> login(@RequestBody UserLoginDTO userLoginDTO) {
-        Authentication authentication = authenticationManager.authenticate(
+        authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(userLoginDTO.getEmail(), userLoginDTO.getPassword())
         );
         try {

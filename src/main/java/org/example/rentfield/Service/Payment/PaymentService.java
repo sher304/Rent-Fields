@@ -1,5 +1,8 @@
 package org.example.rentfield.Service.Payment;
 
+import org.example.rentfield.CustomException.FieldNotFoundException;
+import org.example.rentfield.CustomException.ReservationNotFoundException;
+import org.example.rentfield.CustomException.UserNotFoundException;
 import org.example.rentfield.Model.*;
 import org.example.rentfield.Model.DTO.PaymentDTO;
 import org.example.rentfield.Model.Enums.BookingStatus;
@@ -7,7 +10,6 @@ import org.example.rentfield.Model.Enums.PaymentStatus;
 import org.example.rentfield.Model.Enums.Role;
 import org.example.rentfield.Repository.Booking.BookingRepository;
 import org.example.rentfield.Repository.Field.FieldRepository;
-import org.example.rentfield.Repository.Payment.PaymentDelegate;
 import org.example.rentfield.Repository.Payment.PaymentRepository;
 import org.example.rentfield.Repository.Reservation.ReservationRepository;
 import org.example.rentfield.Repository.User.RegistrationRepository;
@@ -42,7 +44,7 @@ public class PaymentService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
         User user = registrationRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
         boolean isAuthorized = authentication.getAuthorities().stream()
                 .anyMatch(auth -> auth.getAuthority().equalsIgnoreCase(Role.User.name())
                         || auth.getAuthority().equalsIgnoreCase(Role.User.name())
@@ -50,8 +52,8 @@ public class PaymentService {
 
         if (!isAuthorized) throw new RuntimeException("User is not authorized!");
 
-        Reservation reservation = reservationRepository.findById(paymentDTO.getReservation_id()).orElseThrow(() -> new RuntimeException("Reservation not found"));
-        FootballField footballField = fieldRepository.findById(reservation.getField().getField_id()).orElseThrow(() -> new RuntimeException("Reservation not found"));
+        Reservation reservation = reservationRepository.findById(paymentDTO.getReservation_id()).orElseThrow(() -> new ReservationNotFoundException("Reservation not found"));
+        FootballField footballField = fieldRepository.findById(reservation.getField().getFieldId()).orElseThrow(() -> new FieldNotFoundException("Field not found"));
         Payment payment = paymentMapper.map(paymentDTO, reservation);
 
         Booking booking = new Booking();

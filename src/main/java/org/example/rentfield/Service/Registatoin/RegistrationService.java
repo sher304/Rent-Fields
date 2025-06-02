@@ -33,9 +33,6 @@ public class RegistrationService {
     public void registerUser(UserRequestDTO userRequestDTO) throws ConstraintViolationException, DataIntegrityViolationException {
         User user = userMapper.map(userRequestDTO);
 
-        System.out.println("Checking phone: " + user.getPhoneNumber());
-        System.out.println("Exists: " + registrationRepository.existsByPhoneNumber(user.getPhoneNumber()));
-
         if (registrationRepository.existsByEmail(user.getEmail())) {
             throw new RuntimeException("Email already in use");
         }
