@@ -1,5 +1,8 @@
 package org.example.rentfield.Service.Field;
 
+import org.example.rentfield.CustomException.FieldNotFoundException;
+import org.example.rentfield.CustomException.NotAdminException;
+import org.example.rentfield.CustomException.UserNotFoundException;
 import org.example.rentfield.Model.DTO.FieldDTO;
 import org.example.rentfield.Model.Enums.Role;
 import org.example.rentfield.Model.FootballField;
@@ -35,12 +38,12 @@ public class FieldService {
         boolean isAdmin = authentication.getAuthorities().stream()
                 .anyMatch(auth -> auth.getAuthority().equalsIgnoreCase(Role.Admin.name()));
         if (!isAdmin) {
-            throw new RuntimeException("Not admin");
+            throw new NotAdminException("Not admin");
         }
 
         Optional<User> manager = registrationRepository.findById(fieldDTO.getManager_id());
         if (!manager.isPresent()) {
-            throw new RuntimeException("User not found");
+            throw new UserNotFoundException("User not found");
         }
         manager.get().setRole(Role.Manager);
         registrationRepository.save(manager.get());
@@ -68,12 +71,12 @@ public class FieldService {
         boolean isAdmin = authentication.getAuthorities().stream()
                 .anyMatch(auth -> auth.getAuthority().equalsIgnoreCase(Role.Admin.name()));
         if (!isAdmin) {
-            throw new RuntimeException("Not admin");
+            throw new NotAdminException("Not admin!");
         }
 
         Optional<FootballField> field = fieldRepository.findById(id);
         if (!field.isPresent()) {
-            throw new RuntimeException("Not found id");
+            throw new FieldNotFoundException("Field not found");
         }
         fieldRepository.deleteById(id);
     }

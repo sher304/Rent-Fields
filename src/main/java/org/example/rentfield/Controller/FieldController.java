@@ -1,8 +1,12 @@
 package org.example.rentfield.Controller;
 
 import jakarta.validation.Valid;
+import org.example.rentfield.CustomException.FieldNotFoundException;
+import org.example.rentfield.CustomException.NotAdminException;
+import org.example.rentfield.CustomException.UserNotFoundException;
 import org.example.rentfield.Model.DTO.FieldDTO;
 import org.example.rentfield.Service.Field.FieldService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -28,18 +32,20 @@ public class FieldController {
         try {
             fieldService.addField(fieldDTO);
             return ResponseEntity.ok().build();
-        } catch (Exception e) {
-            return  ResponseEntity.badRequest().body(e.getMessage());
+        } catch (NotAdminException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
+        } catch (UserNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
 
     @GetMapping("/api/v1/field/{id}")
-    public ResponseEntity<FieldDTO> getField(@PathVariable int id){
+    public ResponseEntity<?> getField(@PathVariable int id){
         try {
             FieldDTO fieldDTO = fieldService.getField(id);
             return ResponseEntity.ok().body(fieldDTO);
-        } catch (Exception e) {
-            return  ResponseEntity.notFound().build();
+        } catch (FieldNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
 
@@ -49,13 +55,14 @@ public class FieldController {
     }
 
     @DeleteMapping("/api/v1/field/{id}")
-    public ResponseEntity<FieldDTO> removeField(@PathVariable int id){
+    public ResponseEntity<?> removeField(@PathVariable int id){
         try {
             fieldService.removeField(id);
             return ResponseEntity.ok().build();
-        } catch (Exception e) {
-            System.out.println("DELETE EREROR: + " + e.getMessage());
-            return ResponseEntity.notFound().build();
+        } catch (NotAdminException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
+        } catch (FieldNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
 }
