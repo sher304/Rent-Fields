@@ -3,6 +3,7 @@ package org.example.rentfield.Service.Reservation;
 import org.aspectj.apache.bcel.classfile.Field;
 import org.example.rentfield.CustomException.FieldNotFoundException;
 import org.example.rentfield.CustomException.ReservationAlreadyUses;
+import org.example.rentfield.CustomException.ReservationNotFoundException;
 import org.example.rentfield.CustomException.UserNotFoundException;
 import org.example.rentfield.Model.DTO.ReservationDTO;
 import org.example.rentfield.Model.Enums.BookingStatus;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import javax.swing.text.html.Option;
 import java.nio.file.ReadOnlyFileSystemException;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -77,5 +79,29 @@ public class ReservationService {
         reservation.setStatus(BookingStatus.Pending);
         reservationRepository.save(reservation);
         return reservationMapper.map(reservation);
+    }
+
+    public void cancelReservation(int id) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
+
+        Optional<Reservation> reservation = reservationRepository.findById(id);
+        if (!reservation.isPresent()) {
+            throw new ReservationNotFoundException("Reservation not found");
+        }
+
+        if (!reservation.get().getUser().getEmail().equals(email)) {
+            throw new UserNotFoundException("This user does not has permission to cancel reservation");
+        }
+
+        if (reservation.get().getStatus().equals(BookingStatus.Busy)) {
+            throw new ReservationAlreadyUses("You already paid for this reservation, you can't cancel your reservation");
+        }
+
+        long minutesUntilStart = Duration.between(LocalDateTime.now(), reservation.get().getReservationStart()).toMinutes();
+        if (minutesUntilStart > 10) {
+            throw new ReservationAlreadyUses("Time to cancelling reservation is over 10 minutes.");
+        }
+        reservationRepository.deleteById(id);
     }
 }
