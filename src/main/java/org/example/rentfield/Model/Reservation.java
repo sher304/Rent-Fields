@@ -1,5 +1,6 @@
 package org.example.rentfield.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.example.rentfield.Model.Enums.BookingStatus;
 
@@ -27,6 +28,7 @@ public class Reservation {
     private FootballField field;
 
     @OneToOne(mappedBy = "reservation", cascade = CascadeType.ALL)
+    @JsonIgnore
     private Payment payment;
 
     public int getReservation_id() {

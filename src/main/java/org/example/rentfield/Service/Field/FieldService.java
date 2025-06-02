@@ -13,9 +13,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Field;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class FieldService {
@@ -89,5 +92,21 @@ public class FieldService {
         footballField.setLocation("C");
         footballField.setPrice_per_hour(140);
         fieldRepository.save(footballField);
+    }
+
+    public List<FieldDTO> searchFields(String location) {
+        List<FootballField> fields = fieldRepository.searchByLocationLike(location.toLowerCase());
+        return fields.stream()
+                .map(fieldMapper::map)
+                .collect(Collectors.toList());
+    }
+
+    public List<FieldDTO> getAvailableFields(LocalDateTime start, LocalDateTime end) {
+        List<FootballField> allFields = (List<FootballField>) fieldRepository.findAll();
+        List<FootballField> unavailableFields = fieldRepository.findUnavailableFields(start, end);
+        List<FootballField> availableFields = allFields.stream()
+                .filter(field -> !unavailableFields.contains(field))
+                .toList();
+        return availableFields.stream().map(fieldMapper::map).toList();
     }
 }

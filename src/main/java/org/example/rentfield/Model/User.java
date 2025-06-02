@@ -1,6 +1,7 @@
 package org.example.rentfield.Model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
@@ -31,8 +32,8 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "user")
+    @JsonIgnore
     private List<Booking> bookings;
 
     @OneToMany(mappedBy = "user")
@@ -40,10 +41,8 @@ public class User {
     private List<Reservation> reservations;
 
     @OneToMany(mappedBy = "user")
-    @JsonIgnore
     private List<Review> reviews;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "manager", cascade = CascadeType.REMOVE)
     private List<FootballField> managedFields;
 
@@ -89,5 +88,21 @@ public class User {
 
     public int getUser_id() {
         return user_id;
+    }
+
+    public List<Booking> getBookings() {
+        return bookings;
+    }
+
+    public List<Reservation> getReservations() {
+        return reservations;
+    }
+
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    public List<FootballField> getManagedFields() {
+        return managedFields;
     }
 }

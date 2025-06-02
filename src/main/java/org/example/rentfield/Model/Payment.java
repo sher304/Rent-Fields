@@ -1,5 +1,7 @@
 package org.example.rentfield.Model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.example.rentfield.Model.Enums.PaymentStatus;
 
@@ -18,10 +20,12 @@ public class Payment {
 
     @OneToOne
     @JoinColumn(name = "booking_id",  nullable = true)
+    @JsonBackReference
     private Booking booking;
 
     @OneToOne
     @JoinColumn(name = "reservation_id", nullable = true)
+    @JsonIgnore
     private Reservation reservation;
 
     public int getPayment_id() {

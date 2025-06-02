@@ -1,6 +1,8 @@
 package org.example.rentfield.Model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import org.example.rentfield.Model.Enums.BookingStatus;
 
@@ -20,6 +22,7 @@ public class Booking {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @JsonIgnore
     private User user;
 
     @ManyToOne
@@ -27,6 +30,7 @@ public class Booking {
     private FootballField field;
 
     @OneToOne(mappedBy = "booking", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private Payment payment;
 
     public LocalDateTime getStart_date() {

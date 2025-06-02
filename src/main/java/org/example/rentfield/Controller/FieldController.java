@@ -12,6 +12,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -65,5 +66,20 @@ public class FieldController {
         } catch (FieldNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
+    }
+
+
+    @GetMapping("/api/v1/fields/search")
+    public ResponseEntity<?> searchFields(@RequestParam String location) {
+        List<FieldDTO> results = fieldService.searchFields(location);
+        return ResponseEntity.ok(results);
+    }
+
+
+    @GetMapping("/api/v1/fields/time")
+    public ResponseEntity<List<FieldDTO>> getAllFieldsByTime(@RequestParam LocalDateTime start,
+                                                             @RequestParam LocalDateTime end){
+        List<FieldDTO> availableFields = fieldService.getAvailableFields(start, end);
+        return ResponseEntity.ok(availableFields);
     }
 }

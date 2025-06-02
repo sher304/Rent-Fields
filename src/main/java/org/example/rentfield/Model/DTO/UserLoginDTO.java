@@ -9,6 +9,7 @@ public class UserLoginDTO {
     private String password;
     private Role role;
 
+
     public void setUserID(int userID) {
         this.userID = userID;
     }

@@ -1,5 +1,6 @@
 package org.example.rentfield.Model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
@@ -96,6 +97,7 @@ public class FootballField {
 
     @ManyToOne
     @JoinColumn(name = "manager_id")
+    @JsonIgnore
     private User manager;
 
     @OneToMany(mappedBy = "field")
