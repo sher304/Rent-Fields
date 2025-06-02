@@ -24,5 +24,4 @@ public interface FieldRepository extends CrudRepository<FootballField, Integer> 
 
     @Query("SELECT f FROM FootballField f WHERE LOWER(f.manager.email) = LOWER(:email)")
     List<FootballField> findByFieldByEmail(@Param("email") String email);
-
 }

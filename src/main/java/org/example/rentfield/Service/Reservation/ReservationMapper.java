@@ -4,10 +4,17 @@ import org.example.rentfield.Model.DTO.ReservationDTO;
 import org.example.rentfield.Model.FootballField;
 import org.example.rentfield.Model.Reservation;
 import org.example.rentfield.Model.User;
+import org.example.rentfield.Repository.Reservation.ReservationRepository;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ReservationMapper {
+
+    private final ReservationRepository reservationRepository;
+
+    public ReservationMapper(ReservationRepository reservationRepository) {
+        this.reservationRepository = reservationRepository;
+    }
 
     public Reservation map(ReservationDTO reservationDTO,
                            FootballField field,
@@ -17,6 +24,7 @@ public class ReservationMapper {
         reservation.setTime_end(reservationDTO.getTimeEnd());
         reservation.setTime_start(reservationDTO.getTimeStart());
         reservation.setUser(user);
+        reservation.setField(field);
         return reservation;
     }
 
@@ -25,9 +33,7 @@ public class ReservationMapper {
         reservationDTO.setFieldId(reservation.getField().getFieldId());
         reservationDTO.setTimeEnd(reservation.getTime_end());
         reservationDTO.setTimeStart(reservation.getTime_start());
-        reservation.setUser(reservation.getUser());
-        reservation.setReservationStart(reservation.getReservationStart());
-        reservation.setStatus(reservation.getStatus());
         return reservationDTO;
     }
+
 }

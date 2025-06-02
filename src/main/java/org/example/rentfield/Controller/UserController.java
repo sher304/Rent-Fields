@@ -2,6 +2,7 @@ package org.example.rentfield.Controller;
 
 import org.example.rentfield.CustomException.NotAdminException;
 import org.example.rentfield.CustomException.UserNotFoundException;
+import org.example.rentfield.Model.DTO.BookingsAndReservationsDTO;
 import org.example.rentfield.Service.User.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +35,16 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
         } catch (UserNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/api/v1/manage/bookingsAndReservations")
+    public ResponseEntity<?> getBookingsAndReservations() {
+        try {
+            BookingsAndReservationsDTO bookingsAndReservationsDTO = userService.getAllBookingsAndReservations();
+            return ResponseEntity.ok(bookingsAndReservationsDTO);
+        } catch (UserNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
         }
     }
 }
