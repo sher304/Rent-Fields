@@ -1,5 +1,6 @@
 package org.example.rentfield.Controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import org.example.rentfield.CustomException.NotAdminException;
 import org.example.rentfield.CustomException.UserNotFoundException;
 import org.example.rentfield.Model.DTO.BookingsAndReservationsDTO;
@@ -18,6 +19,7 @@ public class UserController {
         this.userService = userService;
     }
 
+    @Operation(summary = "Get my history of bookings, reservations and detailed profile information")
     @GetMapping("/api/v1/me")
     public ResponseEntity<?> getMyInformation() {
         try {
@@ -27,6 +29,7 @@ public class UserController {
         }
     }
 
+    @Operation(summary = "Get all fields, which manager is responsible")
     @GetMapping("/api/v1/manage")
     public ResponseEntity<?> getManageInformation() {
         try {
@@ -38,6 +41,7 @@ public class UserController {
         }
     }
 
+    @Operation(summary = "Get all bookings and reservations for a field which is manager linked.")
     @GetMapping("/api/v1/manage/bookingsAndReservations")
     public ResponseEntity<?> getBookingsAndReservations() {
         try {

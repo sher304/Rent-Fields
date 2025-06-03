@@ -19,12 +19,12 @@ public class Payment {
     private Date date;
 
     @OneToOne
-    @JoinColumn(name = "booking_id",  nullable = true)
+    @JoinColumn(name = "booking_id")
     @JsonBackReference
     private Booking booking;
 
     @OneToOne
-    @JoinColumn(name = "reservation_id", nullable = true)
+    @JoinColumn(name = "reservation_id")
     @JsonIgnore
     private Reservation reservation;
 

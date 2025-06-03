@@ -108,7 +108,7 @@ public class FootballField {
     @JsonIgnore
     private List<Reservation> reservations;
 
-    @OneToMany(mappedBy = "field")
+    @OneToMany(mappedBy = "field", cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JsonIgnore
     private List<Review> reviews;
 }

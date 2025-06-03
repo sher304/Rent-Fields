@@ -1,5 +1,6 @@
 package org.example.rentfield.Controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import org.example.rentfield.CustomException.FieldNotFoundException;
 import org.example.rentfield.CustomException.NotAdminException;
@@ -24,6 +25,7 @@ public class FieldController {
         this.fieldService = fieldService;
     }
 
+    @Operation(summary = "Create a new Field", description = "Adds a new field, only access by admin.\nWhile creating, update status fo a user to manager, who is linked to the field.")
     @PostMapping("/api/v1/field")
     public ResponseEntity<?> addField(@Valid @RequestBody FieldDTO fieldDTO,
                                       BindingResult result) {
@@ -41,6 +43,7 @@ public class FieldController {
         }
     }
 
+    @Operation(summary = "Show details of one field")
     @GetMapping("/api/v1/field/{id}")
     public ResponseEntity<?> getField(@PathVariable int id){
         try {
@@ -51,11 +54,13 @@ public class FieldController {
         }
     }
 
+    @Operation(summary = "Get all fields")
     @GetMapping("/api/v1/fields")
     public ResponseEntity<List<FieldDTO>> getAllField(){
         return ResponseEntity.ok().body(fieldService.getAllFields());
     }
 
+    @Operation(summary = "Delete field, only by admin access", description = "Delete all bookings etc, by cascade")
     @DeleteMapping("/api/v1/field/{id}")
     public ResponseEntity<?> removeField(@PathVariable int id){
         try {
@@ -69,6 +74,7 @@ public class FieldController {
     }
 
 
+    @Operation(summary = "Search, by location, description and title.")
     @GetMapping("/api/v1/fields/search")
     public ResponseEntity<?> searchFields(@RequestParam String location) {
         List<FieldDTO> results = fieldService.searchFields(location);
@@ -76,6 +82,7 @@ public class FieldController {
     }
 
 
+    @Operation(summary = "Filter fields, by time which is required")
     @GetMapping("/api/v1/fields/time")
     public ResponseEntity<List<FieldDTO>> getAllFieldsByTime(@RequestParam LocalDateTime start,
                                                              @RequestParam LocalDateTime end){
