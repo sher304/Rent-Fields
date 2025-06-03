@@ -4,11 +4,15 @@ import org.example.rentfield.CustomException.FieldNotFoundException;
 import org.example.rentfield.CustomException.NotAdminException;
 import org.example.rentfield.CustomException.UserNotFoundException;
 import org.example.rentfield.Model.DTO.FieldDTO;
+import org.example.rentfield.Model.DTO.ReviewDTO;
 import org.example.rentfield.Model.Enums.Role;
 import org.example.rentfield.Model.FootballField;
+import org.example.rentfield.Model.Review;
 import org.example.rentfield.Model.User;
 import org.example.rentfield.Repository.Field.FieldRepository;
+import org.example.rentfield.Repository.Raiting.RatingRepository;
 import org.example.rentfield.Repository.User.RegistrationRepository;
+import org.example.rentfield.Service.Rating.RatingMapper;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -26,13 +30,19 @@ public class FieldService {
     private final FieldMapper fieldMapper;
     private final FieldRepository fieldRepository;
     private final RegistrationRepository registrationRepository;
+    private final RatingRepository ratingRepository;
+    private final RatingMapper ratingMapper;
 
     public FieldService(FieldMapper fieldMapper,
                         FieldRepository fieldRepository,
-                        RegistrationRepository registrationRepository) {
+                        RegistrationRepository registrationRepository,
+                        RatingRepository ratingRepository,
+                        RatingMapper ratingMapper) {
         this.fieldMapper = fieldMapper;
         this.fieldRepository = fieldRepository;
         this.registrationRepository = registrationRepository;
+        this.ratingRepository = ratingRepository;
+        this.ratingMapper = ratingMapper;
     }
 
 
@@ -55,17 +65,22 @@ public class FieldService {
     }
 
     public FieldDTO getField(int id) {
-        Optional<FootballField> field = fieldRepository.findById(id);
-        if (!field.isPresent()) {
-            throw new RuntimeException("Not found id");
-        } else {
-            return fieldMapper.map(field.get());
-        }
+        FootballField field = fieldRepository.findById(id).orElseThrow(() -> new FieldNotFoundException("Authorise to write review!"));
+        List<ReviewDTO> reviews = ratingRepository.findAllByField_FieldId(field.getFieldId()).stream().map(ratingMapper::map).collect(Collectors.toList());
+        return fieldMapper.map(field, reviews);
+
     }
 
     public List<FieldDTO> getAllFields() {
         List<FieldDTO> fieldDTOList = new ArrayList<>();
-        fieldRepository.findAll().forEach(field -> fieldDTOList.add(fieldMapper.map(field)));
+        fieldRepository.findAll().forEach(field -> {
+            List<ReviewDTO> reviews = ratingRepository
+                    .findAllByField_FieldId(field.getFieldId())
+                    .stream()
+                    .map(ratingMapper::map)
+                    .collect(Collectors.toList());
+            fieldDTOList.add(fieldMapper.map(field, reviews));
+        });
         return fieldDTOList;
     }
 
@@ -96,17 +111,29 @@ public class FieldService {
 
     public List<FieldDTO> searchFields(String location) {
         List<FootballField> fields = fieldRepository.searchByLocationLike(location.toLowerCase());
-        return fields.stream()
-                .map(fieldMapper::map)
-                .collect(Collectors.toList());
+        return fields.stream().map(field -> {
+            List<ReviewDTO> reviews = ratingRepository.findAllByField_FieldId(field.getFieldId())
+                    .stream()
+                    .map(ratingMapper::map)
+                    .collect(Collectors.toList());
+            return fieldMapper.map(field, reviews);
+        }).collect(Collectors.toList());
     }
 
     public List<FieldDTO> getAvailableFields(LocalDateTime start, LocalDateTime end) {
         List<FootballField> allFields = (List<FootballField>) fieldRepository.findAll();
         List<FootballField> unavailableFields = fieldRepository.findUnavailableFields(start, end);
+
         List<FootballField> availableFields = allFields.stream()
                 .filter(field -> !unavailableFields.contains(field))
                 .toList();
-        return availableFields.stream().map(fieldMapper::map).toList();
+
+        return availableFields.stream().map(field -> {
+            List<ReviewDTO> reviews = ratingRepository.findAllByField_FieldId(field.getFieldId())
+                    .stream()
+                    .map(ratingMapper::map)
+                    .collect(Collectors.toList());
+            return fieldMapper.map(field, reviews);
+        }).collect(Collectors.toList());
     }
 }

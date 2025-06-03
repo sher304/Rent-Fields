@@ -8,6 +8,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import org.example.rentfield.Model.Review;
+
+import java.util.List;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class FieldDTO {
@@ -23,6 +26,16 @@ public class FieldDTO {
     private String location;
     @NotNull
     private int price_per_hour;
+
+    private List<ReviewDTO> reviews;
+
+    public List<ReviewDTO> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<ReviewDTO> reviews) {
+        this.reviews = reviews;
+    }
 
     public int getManager_id() {
         return manager_id;
