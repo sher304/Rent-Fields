@@ -3,7 +3,6 @@
 This project includes full Swagger (OpenAPI 3.0) documentation.
 
 - Access the Swagger UI here: [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
-- View the raw OpenAPI spec: [http://localhost:8080/v3/api-docs](http://localhost:8080/v3/api-docs)
 
 ### Main Endpoints
 
