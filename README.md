@@ -1,12 +1,8 @@
-Here’s a simple, clean README.md for your Rent Football Field project:
-
-⸻
-
-⚽ Rent Football Field
+Rent Football Field
 
 A Java Spring Boot web application for managing football field reservations, users, payments, and reviews with role-based access (Admin, Manager, User).
 
-✅ Features
+Features:
 	•	User registration & login
 	•	Role-based access (Admin, Manager, User)
 	•	Add/view/delete football fields (Admin)
@@ -16,7 +12,7 @@ A Java Spring Boot web application for managing football field reservations, use
 	•	Manager dashboard to view own fields and reservations
 	•	REST API (optional) & web UI (Thymeleaf)
 
-🛠 Tech Stack
+Tech Stack:
 	•	Java 21
 	•	Spring Boot
 	•	Spring Security
@@ -25,7 +21,7 @@ A Java Spring Boot web application for managing football field reservations, use
 	•	Thymeleaf (for frontend)
 	•	Swagger (API docs)
 
-▶️ How to Run
+How to Run:
 	1.	Clone the repo
 git clone https://github.com/sher304/Rent-Fields
 	2.	Open in IntelliJ / VS Code
@@ -35,9 +31,8 @@ git clone https://github.com/sher304/Rent-Fields
 	•	Swagger: http://localhost:8080/swagger-ui.html
 	•	H2 Console: http://localhost:8080/h2-console
 
-🔐 Roles
+Roles:
 
-Role	Capabilities
-Admin	Manage users, fields
-Manager	View/manage own fields and bookings
-User	Book fields, make payments, add reviews
+Admin – Manage users, fields
+Manager – View/manage own fields and bookings
+User – Book fields, make payments, add reviews
