@@ -1,43 +1,26 @@
-# Rent Football Field
+## 📄 API Documentation
 
-A Java Spring Boot web application for managing football field reservations, users, payments, and reviews with role-based access (Admin, Manager, User).
+This project includes full Swagger (OpenAPI 3.0) documentation.
 
-## Features
+- Access the Swagger UI here: [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
+- View the raw OpenAPI spec: [http://localhost:8080/v3/api-docs](http://localhost:8080/v3/api-docs)
 
-- User registration & login
-- Role-based access (Admin, Manager, User)
-- Add/view/delete football fields (Admin)
-- Reserve and book fields (User)
-- Payments linked to reservations
-- Field reviews and ratings
-- Manager dashboard to view own fields and reservations
-- REST API (optional) & web UI (Thymeleaf)
+### Main Endpoints
 
-## Tech Stack
-
-- Java 21
-- Spring Boot
-- Spring Security
-- Spring Data JPA
-- H2 Database (in-memory)
-- Thymeleaf (for frontend)
-- Swagger (API docs)
-
-## How to Run
-
-1. Clone the repo  
-   ```bash
-   git clone https://github.com/sher304/Rent-Fields
-   ```
-2. Open in IntelliJ / VS Code
-3. Run `RentFieldApplication.java`
-4. Access:
-   - Web UI: [http://localhost:8080/api/v1/login](http://localhost:8080/api/v1/login)
-   - Swagger: [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)
-   - H2 Console: [http://localhost:8080/h2-console](http://localhost:8080/h2-console)
-
-## Roles
-
-- **Admin** – Manage users, fields  
-- **Manager** – View/manage own fields and bookings  
-- **User** – Book fields, make payments, add reviews
+| Method | Endpoint                          | Description                                     |
+|--------|-----------------------------------|-------------------------------------------------|
+| POST   | `/api/v1/registration`            | Register a new user                             |
+| POST   | `/api/v1/login`                   | Log in                                          |
+| POST   | `/api/v1/field`                   | Create a new field (Admin only)                 |
+| GET    | `/api/v1/fields`                  | View all fields                                 |
+| GET    | `/api/v1/fields/search`           | Search fields by location/title/description     |
+| GET    | `/api/v1/fields/time`             | Filter fields by time availability              |
+| POST   | `/api/v1/reservation`             | Make a reservation                              |
+| DELETE | `/api/v1/reservation/cancel/{id}` | Cancel a reservation                            |
+| POST   | `/api/v1/payment`                 | Make a payment                                  |
+| POST   | `/api/v1/rate`                    | Add a field review                              |
+| GET    | `/api/v1/me`                      | Get logged-in user's profile                    |
+| GET    | `/api/v1/manage`                  | Manager's fields                                |
+| GET    | `/api/v1/manage/bookingsAndReservations` | Manager's reservations/bookings         |
+| GET    | `/api/v1/users`                   | Admin: Get all users                            |
+| DELETE | `/api/v1/user/{id}`               | Admin: Delete a user                            |
